@@ -51,8 +51,13 @@ public class WordSorter {
 		String pattern = args[1];
 		ArrayList<String> words = new ArrayList<String>();
 		ArrayList<String> filteredWords = new ArrayList<String>();
-		regexp = Pattern.compile(pattern);
-		
+		try {
+			regexp = Pattern.compile(pattern);
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+			return;
+		}
 		try (Scanner scanReader = new Scanner(new FileReader(filename));) {
 			while(scanReader.hasNext()) {
 				words.add(scanReader.next().toLowerCase());
