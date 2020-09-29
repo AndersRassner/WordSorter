@@ -43,6 +43,7 @@ public class WordSorter {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+				
 		System.out.println("End of program");
 	}
 	
@@ -94,6 +95,7 @@ public class WordSorter {
 			return;
 		}
 		
+		new WordCounter().countWords(filteredWords);
 		
 		//System.out.print(words);
 		//System.out.println("");
