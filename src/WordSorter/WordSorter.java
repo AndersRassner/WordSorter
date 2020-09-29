@@ -1,7 +1,11 @@
 package WordSorter;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -9,7 +13,8 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class WordSorter {
-	private String filename;
+	private String inputFilename;
+	private String outputFilename;
 	private Pattern regexp;
 	
 	public static void main(String[] args) {
@@ -23,21 +28,16 @@ public class WordSorter {
 		 * 
 		 * */
 		
-		/* Task 1.a
-		if(args.length != 1) {
-			System.out.println("Expected argument FILENAME, ending program.");
-			System.exit(1);
-		}*/
-		/* Task 1.b */
+		/* Task 1.b
 		if(args.length != 2) {
 			System.out.println("Expected arguments FILENAME and REGEXP, ending program.");
 			System.exit(1);
-		}
-		/* Task 1.c
-		 * if(args.length != 3) {
+		}*/
+		/* Task 1.c*/
+		if(args.length != 3) {
 			System.out.println("Expected arguments INPUT_FILENAME, OUTPUT_FILENAME, REGEXP ending program.");
 			System.exit(1);
-		}*/
+		}
 		try {
 			new WordSorter().go(args);
 		} catch (FileNotFoundException e) {
@@ -47,10 +47,12 @@ public class WordSorter {
 	}
 	
 	private void go(String[] args) throws FileNotFoundException {
-		filename = args[0];
+		inputFilename = args[0];
+		outputFilename = args[2];
 		String pattern = args[1];
 		ArrayList<String> words = new ArrayList<String>();
 		ArrayList<String> filteredWords = new ArrayList<String>();
+		
 		try {
 			regexp = Pattern.compile(pattern);
 		}
@@ -58,7 +60,8 @@ public class WordSorter {
 			ex.printStackTrace();
 			return;
 		}
-		try (Scanner scanReader = new Scanner(new FileReader(filename));) {
+		
+		try (Scanner scanReader = new Scanner(new FileReader(inputFilename))) {
 			while(scanReader.hasNext()) {
 				words.add(scanReader.next().toLowerCase());
 			}
@@ -75,8 +78,25 @@ public class WordSorter {
 			}
 		}
 
-		System.out.print(words);
-		System.out.println("");
+		if(outputFilename == null) {
+			System.out.println("Incorrect filename, ending program.");
+			return;
+		}
+		File outputFile = new File(outputFilename);
+		try (BufferedWriter buffWriter = new BufferedWriter(new FileWriter(outputFile))) {
+			/* if toString isn't wanted.
+			for(String word : filteredWords) {
+				buffWriter.append(word + " ");
+			}*/
+			buffWriter.append(filteredWords.toString());
+		} catch(IOException ex) {
+			ex.printStackTrace();
+			return;
+		}
+		
+		
+		//System.out.print(words);
+		//System.out.println("");
 		System.out.print(filteredWords);
 		System.out.println("");
 		
