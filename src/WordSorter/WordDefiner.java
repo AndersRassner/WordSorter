@@ -16,15 +16,15 @@ public class WordDefiner {
 	private HashMap<String, String> dictionary;
 	private Pattern regex;
 	
-	public WordDefiner() {
+	public WordDefiner() throws FileNotFoundException {
 		populateDictionary();
 	}
-	public WordDefiner(String filename) {
+	public WordDefiner(String filename) throws FileNotFoundException {
 		inputFilename = filename;
 		populateDictionary();
 	}
 	
-	private void populateDictionary() {
+	private void populateDictionary() throws FileNotFoundException {
 		dictionary = new HashMap<String, String>();
 		// read dictionary from file given
 		try(BufferedReader buffReader = new BufferedReader(new FileReader(inputFilename))) {
@@ -37,8 +37,7 @@ public class WordDefiner {
 			}
 		}
 		catch(FileNotFoundException ex) {
-			System.out.println("File " + inputFilename + " wasn't found.");
-			ex.printStackTrace();
+			throw ex;
 		}
 		catch (IOException e) {
 			e.printStackTrace();
