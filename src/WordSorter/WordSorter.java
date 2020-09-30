@@ -95,7 +95,7 @@ public class WordSorter {
 			return;
 		}
 		
-		new WordCounter().countWords(filteredWords);
+		new WordCounter().printAlphabetDistribution(filteredWords);
 		
 		//System.out.print(words);
 		//System.out.println("");

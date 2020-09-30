@@ -9,7 +9,12 @@ import java.util.stream.IntStream;
 public class WordCounter {
 	private HashMap<Character, Integer> counter;
 	
-	public void countWords(ArrayList<String> filteredWords) {
+	public void printAlphabetDistribution(ArrayList<String> filteredWords) {
+		countWords(filteredWords);
+		printValues();
+	}
+	
+	private void countWords(ArrayList<String> filteredWords) {
 		counter = new HashMap<Character, Integer>();
 		char[] alphabet = IntStream.rangeClosed('a', 'z')
 			    .mapToObj(c -> "" + (char) c).collect(Collectors.joining()).toCharArray();
@@ -23,8 +28,6 @@ public class WordCounter {
 			}
 			counter.put(c, value);
 		}
-		
-		printValues();
 	}
 	
 	private void printValues() {
