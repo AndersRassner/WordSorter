@@ -16,8 +16,7 @@ public class WordCounter {
 	
 	private void countWords(ArrayList<String> filteredWords) {
 		counter = new HashMap<Character, Integer>();
-		char[] alphabet = IntStream.rangeClosed('a', 'z')
-			    .mapToObj(c -> "" + (char) c).collect(Collectors.joining()).toCharArray();
+		char[] alphabet = getAlphabet();
 		
 		for(char c : alphabet) {
 			Integer value = 0;
@@ -37,5 +36,10 @@ public class WordCounter {
 				System.out.println(pair.getKey() + ": " + pair.getValue());
 			}
 		}
+	}
+	
+	private char[] getAlphabet() {
+		return IntStream.rangeClosed('a', 'z')
+				.mapToObj(c -> "" + (char) c).collect(Collectors.joining()).toCharArray();
 	}
 }
