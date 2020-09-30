@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /* Reads dictionary entries from a file and then supports getting defintion of words.
  * Also supports getting words matching a regex
@@ -13,6 +14,7 @@ import java.util.regex.Pattern;
 public class WordDefiner {
 	private String inputFilename = "dictionary_words.txt";
 	private HashMap<String, String> dictionary;
+	private Pattern regex;
 	
 	public WordDefiner() {
 		populateDictionary();
@@ -33,7 +35,6 @@ public class WordDefiner {
 				int firstSpace = line.indexOf(" ");
 				dictionary.put(line.substring(0, firstSpace), line.substring(firstSpace + 1));
 			}
-			System.out.println("Populated dictionary.");
 		}
 		catch(FileNotFoundException ex) {
 			System.out.println("File " + inputFilename + " wasn't found.");
@@ -51,13 +52,24 @@ public class WordDefiner {
 		} 
 	}
 	
-	public void printDefinitions(String regex) {
-		System.out.println("Definitionsss");
-		
+	public void printDefinitions(String regexString) {
+		try {
+			regex = Pattern.compile(regexString, Pattern.CASE_INSENSITIVE);
+		}
+		catch (PatternSyntaxException ex) {
+			ex.printStackTrace();
+			return;
+		}
+		printDefinitions();
 	}
 	
-	private void printDefinitions(Pattern regex) {
-		
+	//assumes regex only applicable to words, not definitions
+	private void printDefinitions() {
+		for(HashMap.Entry<String, String> pair : dictionary.entrySet()) {
+			if(regex.matcher(pair.getKey()).matches()) {
+				System.out.println(pair.getKey() + ": " + pair.getValue());
+			}
+		}
 	}
 
 }
