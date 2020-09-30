@@ -15,8 +15,8 @@ public class WordCounter {
 	}
 	
 	private void countWords(ArrayList<String> filteredWords) {
-		counter = new HashMap<Character, Integer>();
 		char[] alphabet = getAlphabet();
+		counter = new HashMap<Character, Integer>(alphabet.length);
 		
 		for(char c : alphabet) {
 			Integer value = 0;
@@ -30,7 +30,6 @@ public class WordCounter {
 	}
 	
 	private void printValues() {
-		//TODO: replace with printout skipping values of 0
 		for(HashMap.Entry<Character, Integer> pair : counter.entrySet()) {
 			if(pair.getValue() > 0) {
 				System.out.println(pair.getKey() + ": " + pair.getValue());
