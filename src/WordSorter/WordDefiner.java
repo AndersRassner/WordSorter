@@ -30,7 +30,7 @@ public class WordDefiner {
 	private void populateDictionary() throws FileNotFoundException {
 		dictionary = new HashMap<String, String>();
 		// read dictionary from file given
-		try(BufferedReader buffReader = new BufferedReader(new FileReader(inputFilename))) {
+		try(BufferedReader buffReader = createBufferedReader()) {
 			String line;
 			
 			//populate dictionary
@@ -46,45 +46,30 @@ public class WordDefiner {
 			e.printStackTrace();
 		}
 	}
+	
 	public void printDefinition(String word) {
 		if(dictionary.containsKey(word)) {
-			//System.out.println(word + ": " + dictionary.get(word));
+			print(word, dictionary.get(word));
 		} else {
 			System.out.println("Word not present in dictionary");	
 		} 	
 	}
 	
 	public void printDefinitions(String regexString) {
-		try {
-			regex = Pattern.compile(regexString, Pattern.CASE_INSENSITIVE);
+		if(compileRegex(regexString)) {
+			printDefinitions();
 		}
-		catch (PatternSyntaxException ex) {
-			ex.printStackTrace();
-			return;
-		}
-		printDefinitions();
 	}
 	public void printDefinitionsSorted(String regexString) {
-		try {
-			regex = Pattern.compile(regexString, Pattern.CASE_INSENSITIVE);
+		if(compileRegex(regexString)) {
+			printDefinitionsSorted();
 		}
-		catch (PatternSyntaxException ex) {
-			ex.printStackTrace();
-			return;
-		}
-		printDefinitionsSorted();
 		
 	}
 	public void printDefinitionsSortedReversed(String regexString) {
-		try {
-			regex = Pattern.compile(regexString, Pattern.CASE_INSENSITIVE);
-		}
-		catch (PatternSyntaxException ex) {
-			ex.printStackTrace();
-			return;
-		}
-		printDefinitionsSortedReversed();
-		
+		if(compileRegex(regexString)) {
+			printDefinitionsSortedReversed();
+		}		
 	}
 	
 	//assumes regex only applicable to words, not definitions
@@ -95,6 +80,7 @@ public class WordDefiner {
 	}
 	private void printDefinitionsSorted() {
 		TreeMap<String, String> sortedDefinitions = new TreeMap<String, String>(getDefinitions());
+		
 		for(Map.Entry<String, String> pair : sortedDefinitions.entrySet()) {
 			print(pair);
 		}
@@ -102,6 +88,7 @@ public class WordDefiner {
 	private void printDefinitionsSortedReversed() {
 		TreeMap<String, String> sortedDefinitions = new TreeMap<String, String>(Collator.getInstance().reversed());
 		sortedDefinitions.putAll(getDefinitions());
+		
 		for(Map.Entry<String, String> pair : sortedDefinitions.entrySet()) {
 			print(pair);
 		}
@@ -110,6 +97,7 @@ public class WordDefiner {
 	
 	private HashMap<String, String> getDefinitions() {
 		HashMap<String, String> matches = new HashMap<String, String>();
+		
 		for(HashMap.Entry<String, String> pair : dictionary.entrySet()) {
 			if(regex.matcher(pair.getKey()).matches()) {
 				matches.put(pair.getKey(), pair.getValue());
@@ -125,4 +113,18 @@ public class WordDefiner {
 		System.out.println(key + ": " + value);
 	}
 
+	private boolean compileRegex(String regexString) {
+		try {
+			regex = Pattern.compile(regexString, Pattern.CASE_INSENSITIVE);
+		}
+		catch (PatternSyntaxException ex) {
+			ex.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	private BufferedReader createBufferedReader() throws FileNotFoundException {
+			return new BufferedReader(new FileReader(inputFilename));
+	}
 }
