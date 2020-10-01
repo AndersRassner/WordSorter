@@ -16,8 +16,11 @@ public class WordDefinerTestdrive {
 			System.out.println("Checking NonexistantWord, shouldn't exist");
 			wordDefiner.printDefinition("NonexistantWord");
 			System.out.println();
-			System.out.println("Checking regex for .*lor.*, should exist several");
+			System.out.println("Checking regex for .*lor.*, should exist several.");
+			System.out.println("=Unsorted=");
 			wordDefiner.printDefinitions(".*lor.*");
+			System.out.println("=Sorted=");
+			wordDefiner.printDefinitionsSorted(".*lor.*");
 			System.out.println();
 			System.out.println("End of testdrive part 1");
 		}
@@ -37,7 +40,10 @@ public class WordDefinerTestdrive {
 			wordDefinerButBetter.printDefinition("NonexistantWord");
 			System.out.println();
 			System.out.println("Checking regex for .*lor.*, should exist several");
+			System.out.println("=Unsorted=");
 			wordDefinerButBetter.printDefinitions(".*lor.*");
+			System.out.println("=Sorted=");
+			wordDefinerButBetter.printDefinitionsSorted(".*lor.*");
 			System.out.println();
 			System.out.println("End of testdrive part 2");
 		}

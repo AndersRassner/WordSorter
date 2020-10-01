@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -45,10 +47,10 @@ public class WordDefiner {
 	}
 	public void printDefinition(String word) {
 		if(dictionary.containsKey(word)) {
-			System.out.println(word + ": " + dictionary.get(word));
+			//System.out.println(word + ": " + dictionary.get(word));
 		} else {
 			System.out.println("Word not present in dictionary");	
-		} 
+		} 	
 	}
 	
 	public void printDefinitions(String regexString) {
@@ -61,14 +63,46 @@ public class WordDefiner {
 		}
 		printDefinitions();
 	}
+	public void printDefinitionsSorted(String regexString) {
+		try {
+			regex = Pattern.compile(regexString, Pattern.CASE_INSENSITIVE);
+		}
+		catch (PatternSyntaxException ex) {
+			ex.printStackTrace();
+			return;
+		}
+		printDefinitionsSorted();
+		
+	}
 	
 	//assumes regex only applicable to words, not definitions
 	private void printDefinitions() {
+		for(Map.Entry<String, String> pair : getDefinitions().entrySet()) {
+			print(pair);
+		}
+	}
+	private void printDefinitionsSorted() {
+		TreeMap<String, String> sortedDefinitions = new TreeMap<String, String>(getDefinitions());
+		for(Map.Entry<String, String> pair : sortedDefinitions.entrySet()) {
+			print(pair);
+		}
+	}
+	
+	private HashMap<String, String> getDefinitions() {
+		HashMap<String, String> matches = new HashMap<String, String>();
 		for(HashMap.Entry<String, String> pair : dictionary.entrySet()) {
 			if(regex.matcher(pair.getKey()).matches()) {
-				System.out.println(pair.getKey() + ": " + pair.getValue());
+				matches.put(pair.getKey(), pair.getValue());
 			}
 		}
+		return matches;
+	}
+	
+	private void print(Map.Entry<String, String> pair) {
+		print(pair.getKey(), pair.getValue());
+	}
+	private void print(String key, String value) {
+		System.out.println(key + ": " + value);
 	}
 
 }
