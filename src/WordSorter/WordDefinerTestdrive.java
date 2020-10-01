@@ -21,6 +21,8 @@ public class WordDefinerTestdrive {
 			wordDefiner.printDefinitions(".*lor.*");
 			System.out.println("=Sorted=");
 			wordDefiner.printDefinitionsSorted(".*lor.*");
+			System.out.println("=Sorted (Reversed)=");
+			wordDefiner.printDefinitionsSortedReversed(".*lor.*");
 			System.out.println();
 			System.out.println("End of testdrive part 1");
 		}

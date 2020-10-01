@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.Collator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -74,6 +75,17 @@ public class WordDefiner {
 		printDefinitionsSorted();
 		
 	}
+	public void printDefinitionsSortedReversed(String regexString) {
+		try {
+			regex = Pattern.compile(regexString, Pattern.CASE_INSENSITIVE);
+		}
+		catch (PatternSyntaxException ex) {
+			ex.printStackTrace();
+			return;
+		}
+		printDefinitionsSortedReversed();
+		
+	}
 	
 	//assumes regex only applicable to words, not definitions
 	private void printDefinitions() {
@@ -87,6 +99,14 @@ public class WordDefiner {
 			print(pair);
 		}
 	}
+	private void printDefinitionsSortedReversed() {
+		TreeMap<String, String> sortedDefinitions = new TreeMap<String, String>(Collator.getInstance().reversed());
+		sortedDefinitions.putAll(getDefinitions());
+		for(Map.Entry<String, String> pair : sortedDefinitions.entrySet()) {
+			print(pair);
+		}
+	}
+	
 	
 	private HashMap<String, String> getDefinitions() {
 		HashMap<String, String> matches = new HashMap<String, String>();
