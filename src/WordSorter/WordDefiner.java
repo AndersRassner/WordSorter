@@ -74,41 +74,37 @@ public class WordDefiner {
 	
 	//assumes regex only applicable to words, not definitions
 	private void printDefinitions() {
-		for(Map.Entry<String, String> pair : getDefinitions().entrySet()) {
-			print(pair);
-		}
+		getDefinitions().forEach((word, definition) -> {
+			print(word, definition);
+		});
 	}
 	private void printDefinitionsSorted() {
 		TreeMap<String, String> sortedDefinitions = new TreeMap<String, String>(getDefinitions());
 		
-		for(Map.Entry<String, String> pair : sortedDefinitions.entrySet()) {
-			print(pair);
-		}
+		sortedDefinitions.forEach((word, definition) -> {
+			print(word, definition);
+		});
 	}
 	private void printDefinitionsSortedReversed() {
 		TreeMap<String, String> sortedDefinitions = new TreeMap<String, String>(Collator.getInstance().reversed());
 		sortedDefinitions.putAll(getDefinitions());
-		
-		for(Map.Entry<String, String> pair : sortedDefinitions.entrySet()) {
-			print(pair);
-		}
+
+		sortedDefinitions.forEach((word, definition) -> {
+			print(word, definition);
+		});
 	}
-	
 	
 	private HashMap<String, String> getDefinitions() {
-		HashMap<String, String> matches = new HashMap<String, String>();
+		HashMap<String, String> matchingWords = new HashMap<String, String>();
 		
-		for(HashMap.Entry<String, String> pair : dictionary.entrySet()) {
-			if(regex.matcher(pair.getKey()).matches()) {
-				matches.put(pair.getKey(), pair.getValue());
+		dictionary.forEach((word, definition) -> {
+			if(regex.matcher(word).matches()) {
+				matchingWords.put(word, definition);
 			}
-		}
-		return matches;
+		});
+		return matchingWords;
 	}
 	
-	private void print(Map.Entry<String, String> pair) {
-		print(pair.getKey(), pair.getValue());
-	}
 	private void print(String key, String value) {
 		System.out.println(key + ": " + value);
 	}
