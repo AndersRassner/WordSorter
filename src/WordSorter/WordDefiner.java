@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.Collator;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -86,7 +87,7 @@ public class WordDefiner {
 		});
 	}
 	private void printDefinitionsSortedReversed() {
-		TreeMap<String, String> sortedDefinitions = new TreeMap<String, String>(Collator.getInstance().reversed());
+		TreeMap<String, String> sortedDefinitions = new TreeMap<String, String>(Comparator.reverseOrder());
 		sortedDefinitions.putAll(getDefinitions());
 
 		sortedDefinitions.forEach((word, definition) -> {
